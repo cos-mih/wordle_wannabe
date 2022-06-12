@@ -33,8 +33,11 @@ def set_color(guess_letter, word_letters):
         guess_letter[guess_letter.index(letter)] = checked
 
     for checked in guess_letter:
-        if checked.color == "yellow" and checked.letter not in temp_letters:
-            checked.set_to_white()            
+        if checked.color == "yellow":
+            if checked.letter not in temp_letters:
+                checked.set_to_white()
+        if checked.color == "yellow":
+            temp_letters[temp_letters.index(checked.letter)] = " "            
 
 
 def get_valid_guess(dictionary):
