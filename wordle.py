@@ -14,17 +14,29 @@ class checked_letter:
     def set_to_yellow(self):
         self.color = "yellow"
 
+    def set_to_white(self):
+        self.color = "white"
+
 def set_color(guess_letter, word_letters):
+    copy = word_letters
+
     for letter in guess_letter:
         checked = checked_letter(letter)
 
         if letter in word_letters:
             if guess_letter.index(letter) == word_letters.index(letter):
                 checked.set_to_green()
+                word_letters[word_letters.index(letter)] = " "
             else:
                 checked.set_to_yellow()
 
         guess_letter[guess_letter.index(letter)] = checked
+
+    for checked in guess_letter:
+        if checked.color == "yellow" and checked.letter not in word_letters:
+            checked.set_to_white()            
+
+    word_letters = copy
 
 def get_valid_guess(dictionary):
     guess = input("Enter guess: ")
