@@ -1,4 +1,5 @@
 #!/bin/python3
+from alphabet import alphabet
 from dictionary import dictionary
 import random
 from termcolor import colored
@@ -16,6 +17,31 @@ class checked_letter:
 
     def set_to_white(self):
         self.color = "white"
+
+class colored_alphabet:
+    def __init__(self, alphabet):
+        self.letters = alphabet.copy()
+        for letter in self.letters:
+            checked = checked_letter(letter)
+            self.letters[self.letters.index(letter)] = checked
+
+    def print(self):
+        for letter in self.letters:
+            print(colored(letter.letter, letter.color), end = " ")
+            if self.letters.index(letter) in [9, 18, 25]:
+                print("\n")
+
+    def update(self, list):
+        for letter in list:
+            i = [let.letter for let in self.letters].index(letter.letter)
+            if self.letters[i].color == "green" or self.letters[i].color == "grey":
+                continue
+            if letter.color == "white" and self.letters[i].color == "white":
+                self.letters[i].color = "grey"
+                continue
+            if letter.color == "yellow" or letter.color == "green":
+                self.letters[i].color = letter.color
+
 
 def set_color(guess_letter, word_letters):
     temp_letters = word_letters.copy()
@@ -66,6 +92,7 @@ def check_for_win(guess_letters):
 
 def wordle():
     word = random.choice(dictionary).upper()
+    alph = colored_alphabet(alphabet)
 
     word_letters = []
     for letter in word:
@@ -74,10 +101,14 @@ def wordle():
     guess_board = [[checked_letter(" ") for i in range(5)] for j in range(6)]
 
     for i in range(6):
+        alph.print()
         guess = get_valid_guess(dictionary).upper()
+        print("\n")
 
         guess_letters = list(guess)
         set_color(guess_letters, word_letters)
+
+        alph.update(guess_letters)
 
         guess_board[i] = guess_letters
         print_guess_board(guess_board)
@@ -86,7 +117,8 @@ def wordle():
             break
 
     if win:
-        print("Yay, you got it! The word was: " + "".join(word_letters))
+        print("Yay, you got it! The word was: " + "".join(word_letters), end = "")
+        print(" (%d/6)" %(i + 1))
     else:
         print("You lost :(\nThe word was: " + "".join(word_letters))
             
