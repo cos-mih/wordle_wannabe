@@ -3,6 +3,7 @@ from alphabet import alphabet
 from dictionary import dictionary
 import random
 from termcolor import colored
+import colorama
 
 class checked_letter:
     def __init__(self, letter):
@@ -124,4 +125,5 @@ def wordle():
             
 
 if __name__ == '__main__':
+    colorama.init()
     wordle()
